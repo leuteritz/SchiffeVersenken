@@ -1,8 +1,14 @@
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+
+#define SHIP2_LEN 2
+#define SHIP3_LEN 3
+#define SHIP4_LEN 4
+#define SHIP5_LEN 5
 
 void printBoard(char *board)
 {
@@ -42,7 +48,7 @@ void printBoard(char *board)
     printf("---------------------------------------------\n");
 }
 
-int shipPlacement()
+int userShipStart()
 {
     char userInputLetter;
     char userInputNumber;
@@ -82,8 +88,288 @@ int shipPlacement()
     return temp5;
 }
 
-void PlayerMove(char *board)
+int roundIntNumber(int userInput) // Funktion um eine Zahl auf die nächste 10er Zahl zu runden (z.B. 33 -> 40; 27 -> 30)
 {
+    int lastNumber = userInput % 10;
+    int fullNumber = userInput - lastNumber;
+    int nextFullNumber = fullNumber + 10;
+
+    return nextFullNumber;
+}
+
+void shipPlacement(int shipStartPoint, char *board, int *ship2Amount, int ship3Amount, int ship4Amount, int ship5Amount)
+{
+    char Ship2[SHIP2_LEN] = {'I', 'I'};
+    char Ship3[SHIP3_LEN] = {'I', 'o', 'I'};
+    char Ship4[SHIP4_LEN] = {'I', 'o', 'o', 'I'};
+    char Ship5[SHIP5_LEN] = {'I', 'o', 'o', 'o', 'I'};
+
+    int userShipSize;       // Welches Schiff (Schiffsgröße)
+    int userDirectionValue; // Welche Richtung (Horizontal, vertikal)
+
+
+    printf("Which ship would you like to place (2-5): ");
+    scanf("%d", &userShipSize);
+    printf("0 = vertical  / 1 = horizontal\n");
+    scanf(" %d", &userDirectionValue);
+
+
+    int nextFullNumber = roundIntNumber(shipStartPoint);
+
+    int temp = 0;
+
+
+    if (userDirectionValue == 1) // waagerecht
+    {
+        switch (userShipSize)
+        {
+        case 2:
+            if (*ship2Amount > 0)
+            {
+                for (int i = 0; i < SHIP2_LEN; i++) // Überprüfen ob schon ein Schiff vorhanden ist
+                {
+                    if (board[shipStartPoint + i] != ' ')
+                    {
+                        temp = 1;
+                    }
+                }
+                if (temp == 0) // Wenn kein Schiff vorhanden ist
+                {
+                    if (shipStartPoint + SHIP2_LEN >= nextFullNumber) // Überprüfen ob ein Schiff zu lang ist
+                    {
+                        printf("Ship is too long!\n");
+                    }
+                    else
+                    {
+                        for (int j = 0; j < SHIP2_LEN; j++)
+                        {
+                            board[shipStartPoint + j] = Ship2[j];
+                        }
+                        *ship2Amount -= 1;
+                    }
+                }
+                else
+                {
+                    printf("There is already a ship there!\n");
+                    temp = 0;
+                }
+            }
+            else
+            {
+                printf("You dont have enough ships left!\n");
+            }
+            break;
+        case 3:
+            for (int i = 0; i < SHIP3_LEN; i++) // Überprüfen ob schon ein Schiff vorhanden ist
+            {
+                if (board[shipStartPoint + i] != ' ')
+                {
+                    temp = 1;
+                }
+            }
+            if (temp == 0) // Wenn kein Schiff vorhanden ist
+            {
+                if (shipStartPoint + SHIP3_LEN > nextFullNumber) // Überprüfen ob ein Schiff zu lang ist
+                {
+                    printf("Ship is too long!\n");
+                }
+                else
+                {
+                    for (int j = 0; j < SHIP3_LEN; j++)
+                    {
+                        board[shipStartPoint + j] = Ship3[j];
+                    }
+                    ship3Amount--;
+                }
+            }
+            else
+            {
+                printf("There is already a ship there!\n");
+                temp = 0;
+            }
+            break;
+        case 4:
+            for (int i = 0; i < SHIP4_LEN; i++) // Überprüfen ob schon ein Schiff vorhanden ist
+            {
+                if (board[shipStartPoint + i] != ' ')
+                {
+                    temp = 1;
+                }
+            }
+            if (temp == 0) // Wenn kein Schiff vorhanden ist
+            {
+                if (shipStartPoint + SHIP4_LEN > nextFullNumber)
+                {
+                    printf("Ship is too long!\n");
+                }
+                else
+                {
+                    for (int j = 0; j < SHIP4_LEN; j++)
+                    {
+                        board[shipStartPoint + j] = Ship4[j];
+                    }
+                    ship4Amount--;
+                }
+            }
+            else
+            {
+                printf("There is already a ship there!\n");
+                temp = 0;
+            }
+            break;
+        case 5:
+            for (int i = 0; i < SHIP5_LEN; i++) // Überprüfen ob schon ein Schiff vorhanden ist
+            {
+                if (board[shipStartPoint + i] != ' ')
+                {
+                    temp = 1;
+                }
+            }
+            if (temp == 0) // Wenn kein Schiff vorhanden ist
+            {
+                if (shipStartPoint + SHIP5_LEN > nextFullNumber)
+                {
+                    printf("Ship is too long!\n");
+                }
+                else
+                {
+                    for (int j = 0; j < SHIP5_LEN; j++)
+                    {
+                        board[shipStartPoint + j] = Ship5[j];
+                    }
+                    ship5Amount--;
+                }
+            }
+            else
+            {
+                printf("There is already a ship there!\n");
+                temp = 0;
+            }
+            break;
+        }
+    }
+    else // senkrecht
+    {
+        switch (userShipSize)
+        {
+        case 2:
+            for (int i = 0; i < SHIP2_LEN; i++) // Überprüfen ob schon ein Schiff vorhanden ist
+            {
+                if (board[shipStartPoint + i * 10] != ' ')
+                {
+                    temp = 1;
+                }
+            }
+            if (temp == 0) // Wenn kein Schiff vorhanden ist
+            {
+                if (shipStartPoint + (SHIP2_LEN - 1) * 10 > 100)
+                {
+                    printf("Ship is too long!\n");
+                }
+                else
+                {
+                    for (int j = 0; j < SHIP2_LEN; j++)
+                    {
+                        board[shipStartPoint + j * 10] = Ship2[j];
+                    }
+                    ship2Amount--;
+                }
+            }
+            else
+            {
+                printf("There is already a ship there!\n");
+                temp = 0;
+            }
+            break;
+        case 3:
+            for (int i = 0; i < SHIP3_LEN; i++) // Überprüfen ob schon ein Schiff vorhanden ist
+            {
+                if (board[shipStartPoint + i * 10] != ' ')
+                {
+                    temp = 1;
+                }
+            }
+            if (temp == 0) // Wenn kein Schiff vorhanden ist
+            {
+                if (shipStartPoint + (SHIP3_LEN - 1) * 10 > 100)
+                {
+                    printf("Ship is too long!\n");
+                }
+                else
+                {
+                    for (int j = 0; j < SHIP3_LEN; j++)
+                    {
+                        board[shipStartPoint + j * 10] = Ship3[j];
+                    }
+                    ship3Amount--;
+                }
+            }
+            else
+            {
+                printf("There is already a ship there!\n");
+                temp = 0;
+            }
+            break;
+        case 4:
+            for (int i = 0; i < SHIP4_LEN; i++) // Überprüfen ob schon ein Schiff vorhanden ist
+            {
+                if (board[shipStartPoint + i * 10] != ' ')
+                {
+                    temp = 1;
+                }
+            }
+            if (temp == 0) // Wenn kein Schiff vorhanden ist
+            {
+                if (shipStartPoint + (SHIP4_LEN - 1) * 10 > 100)
+                {
+                    printf("Ship is too long!\n");
+                }
+                else
+                {
+                    for (int j = 0; j < SHIP4_LEN; j++)
+                    {
+                        board[shipStartPoint + j * 10] = Ship4[j];
+                    }
+                    ship4Amount--;
+                }
+            }
+            else
+            {
+                printf("There is already a ship there!\n");
+                temp = 0;
+            }
+            break;
+        case 5:
+            for (int i = 0; i < SHIP5_LEN; i++) // Überprüfen ob schon ein Schiff vorhanden ist
+            {
+                if (board[shipStartPoint + i * 10] != ' ')
+                {
+                    temp = 1;
+                }
+            }
+            if (temp == 0) // Wenn kein Schiff vorhanden ist
+            {
+                if (shipStartPoint + (SHIP5_LEN - 1) * 10 > 100)
+                {
+                    printf("Ship is too long!\n");
+                }
+                else
+                {
+                    for (int j = 0; j < SHIP5_LEN; j++)
+                    {
+                        board[shipStartPoint + j * 10] = Ship5[j];
+                    }
+                    ship5Amount--;
+                }
+            }
+            else
+            {
+                printf("There is already a ship there!\n");
+                temp = 0;
+            }
+            break;
+        }
+    }
 }
 
 
@@ -97,30 +383,24 @@ int main()
                         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
                         ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
 
-    char board2[100] = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',
-                        ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
 
     printBoard(board1);
 
-    printf("\n");
-    printf("\n");
-    printBoard(board2);
+    // Anzahl der Schiffe für einen Spieler
+    int ship2Amount = 2;
+    int ship3Amount = 3;
+    int ship4Amount = 2;
+    int ship5Amount = 1;
 
-    int userInput = shipPlacement();
 
+    // Game Loop
+    while (1)
+    {
+        int start = userShipStart();
+        shipPlacement(start, board1, &ship2Amount, ship3Amount, ship4Amount, ship5Amount);
 
-    board1[userInput] = '□';
-
-    printf("\n");
-    printBoard(board1);
-    printf("\n");
-    printf("\n");
-    printBoard(board2);
-
+        printBoard(board1);
+    }
 
     return 0;
 }
