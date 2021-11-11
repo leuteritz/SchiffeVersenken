@@ -96,9 +96,18 @@ int roundIntNumber(int userInput) // Funktion um eine Zahl auf die nächste 10er
     return nextFullNumber;
 }
 
+void warten(unsigned int mseconds)
+{
+    clock_t goal = mseconds + clock();
+    while (goal > clock())
+        ;
+}
+
 void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int *ship3Amount, int *ship4Amount,
                          int *ship5Amount)
 {
+beginn:
+    warten(1);
     char Ship2[SHIP2_LEN] = {'I', 'I'};
     char Ship3[SHIP3_LEN] = {'I', 'o', 'I'};
     char Ship4[SHIP4_LEN] = {'I', 'o', 'o', 'I'};
@@ -157,6 +166,7 @@ void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int 
             else
             {
                 printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 3:
@@ -193,6 +203,7 @@ void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int 
             else
             {
                 printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 4:
@@ -229,6 +240,7 @@ void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int 
             else
             {
                 printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 5:
@@ -265,6 +277,7 @@ void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int 
             else
             {
                 printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         }
@@ -307,6 +320,7 @@ void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int 
             else
             {
                 printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 3:
@@ -343,6 +357,7 @@ void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int 
             else
             {
                 printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 4:
@@ -379,6 +394,7 @@ void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int 
             else
             {
                 printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 5:
@@ -415,27 +431,26 @@ void shipPlacementPlayer(int shipStartPoint, char *board, int *ship2Amount, int 
             else
             {
                 printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         }
     }
 }
-void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, int *ship3Amount, int *ship4Amount,
-                           int *ship5Amount)
+
+
+void shipPlacementComputer(char *board, int *ship2Amount, int *ship3Amount, int *ship4Amount, int *ship5Amount)
 {
+beginn:
+    warten(100);
     char Ship2[SHIP2_LEN] = {'I', 'I'};
     char Ship3[SHIP3_LEN] = {'I', 'o', 'I'};
     char Ship4[SHIP4_LEN] = {'I', 'o', 'o', 'I'};
     char Ship5[SHIP5_LEN] = {'I', 'o', 'o', 'o', 'I'};
 
-    int userShipSize;       // Welches Schiff (Schiffsgröße)
-    int userDirectionValue; // Welche Richtung (Horizontal, vertikal)
-
-
-    printf("Which ship would you like to place (2-5): ");
-    scanf("%d", &userShipSize);
-    printf("0 = vertical  / 1 = horizontal\n");
-    scanf(" %d", &userDirectionValue);
+    int userShipSize = rand() % (5 + 1 - 2) + 2;       // Welches Schiff (Schiffsgröße)
+    int userDirectionValue = rand() % (1 + 1 - 0) + 0; // Welche Richtung (Horizontal, vertikal)
+    int shipStartPoint = rand() % (99 + 1 - 0) + 0;    // Random Start Postion des Schiffes
 
 
     int nextFullNumber = roundIntNumber(shipStartPoint);
@@ -461,7 +476,7 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 {
                     if (shipStartPoint + SHIP2_LEN >= nextFullNumber) // Überprüfen ob ein Schiff zu lang ist
                     {
-                        printf("Ship is too long!\n");
+                        goto beginn;
                     }
                     else
                     {
@@ -474,13 +489,13 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 }
                 else
                 {
-                    printf("There is already a ship there!\n");
+                    goto beginn;
                     temp = 0;
                 }
             }
             else
             {
-                printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 3:
@@ -497,7 +512,7 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 {
                     if (shipStartPoint + SHIP3_LEN > nextFullNumber) // Überprüfen ob ein Schiff zu lang ist
                     {
-                        printf("Ship is too long!\n");
+                        goto beginn;
                     }
                     else
                     {
@@ -510,13 +525,13 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 }
                 else
                 {
-                    printf("There is already a ship there!\n");
+                    goto beginn;
                     temp = 0;
                 }
             }
             else
             {
-                printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 4:
@@ -533,7 +548,7 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 {
                     if (shipStartPoint + SHIP4_LEN > nextFullNumber)
                     {
-                        printf("Ship is too long!\n");
+                        goto beginn;
                     }
                     else
                     {
@@ -546,13 +561,13 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 }
                 else
                 {
-                    printf("There is already a ship there!\n");
+                    goto beginn;
                     temp = 0;
                 }
             }
             else
             {
-                printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 5:
@@ -569,7 +584,7 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 {
                     if (shipStartPoint + SHIP5_LEN > nextFullNumber)
                     {
-                        printf("Ship is too long!\n");
+                        goto beginn;
                     }
                     else
                     {
@@ -582,13 +597,13 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 }
                 else
                 {
-                    printf("There is already a ship there!\n");
+                    goto beginn;
                     temp = 0;
                 }
             }
             else
             {
-                printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         }
@@ -611,7 +626,7 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 {
                     if (shipStartPoint + (SHIP2_LEN - 1) * 10 > 100)
                     {
-                        printf("Ship is too long!\n");
+                        goto beginn;
                     }
                     else
                     {
@@ -624,13 +639,13 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 }
                 else
                 {
-                    printf("There is already a ship there!\n");
+                    goto beginn;
                     temp = 0;
                 }
             }
             else
             {
-                printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 3:
@@ -647,7 +662,7 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 {
                     if (shipStartPoint + (SHIP3_LEN - 1) * 10 > 100)
                     {
-                        printf("Ship is too long!\n");
+                        goto beginn;
                     }
                     else
                     {
@@ -660,13 +675,13 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 }
                 else
                 {
-                    printf("There is already a ship there!\n");
+                    goto beginn;
                     temp = 0;
                 }
             }
             else
             {
-                printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 4:
@@ -683,7 +698,7 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 {
                     if (shipStartPoint + (SHIP4_LEN - 1) * 10 > 100)
                     {
-                        printf("Ship is too long!\n");
+                        goto beginn;
                     }
                     else
                     {
@@ -696,13 +711,13 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 }
                 else
                 {
-                    printf("There is already a ship there!\n");
+                    goto beginn;
                     temp = 0;
                 }
             }
             else
             {
-                printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         case 5:
@@ -719,7 +734,7 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 {
                     if (shipStartPoint + (SHIP5_LEN - 1) * 10 > 100)
                     {
-                        printf("Ship is too long!\n");
+                        goto beginn;
                     }
                     else
                     {
@@ -732,13 +747,13 @@ void shipPlacementComputer(int shipStartPoint, char *board, int *ship2Amount, in
                 }
                 else
                 {
-                    printf("There is already a ship there!\n");
+                    goto beginn;
                     temp = 0;
                 }
             }
             else
             {
-                printf("You dont have enough ships left!\n");
+                goto beginn;
             }
             break;
         }
@@ -857,16 +872,22 @@ int main()
             int startPointPlayer = userShipStart();
             shipPlacementPlayer(startPointPlayer, boardPlayer, &ship2AmountPlayer, &ship3AmountPlayer,
                                 &ship4AmountPlayer, &ship5AmountPlayer);
+            shipPlacementComputer(boardComputer, &ship2AmountComputer, &ship3AmountComputer, &ship4AmountComputer,
+                                  &ship5AmountComputer);
             printBoard(boardPlayer);
+            printBoard(boardComputer);
         }
 
-        // Schiffe zerstören
-        int shipsToDestroyRemaining = checkRemainingShipsLeft(boardPlayer);
+        // Überprüfen ob nach Schiffe vorhanden sind
+        int shipsToDestroyRemainingPlayerBoard = checkRemainingShipsLeft(boardPlayer);
+        int shipsToDestroyRemainingComputerBoard = checkRemainingShipsLeft(boardComputer);
 
-        if (shipsToDestroyRemaining == 1)
+        if (shipsToDestroyRemainingPlayerBoard == 1 || shipsToDestroyRemainingComputerBoard == 1)
         {
             bombShip(boardPlayer);
+            bombShip(boardComputer);
             printBoard(boardPlayer);
+            printBoard(boardComputer);
         }
         else
         {
@@ -874,7 +895,9 @@ int main()
             break;
         }
 
-        shipsToDestroyRemaining = 0;
+        // Zurücksetzen der Variablen
+        shipsToDestroyRemainingPlayerBoard = 0;
+        shipsToDestroyRemainingComputerBoard = 0;
     }
 
     return 0;
