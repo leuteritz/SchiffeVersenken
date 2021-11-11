@@ -442,7 +442,8 @@ beginn:
 void shipPlacementComputer(char *board, int *ship2Amount, int *ship3Amount, int *ship4Amount, int *ship5Amount)
 {
 beginn:
-    warten(100);
+    srand((unsigned int)time(NULL));
+
     char Ship2[SHIP2_LEN] = {'I', 'I'};
     char Ship3[SHIP3_LEN] = {'I', 'o', 'I'};
     char Ship4[SHIP4_LEN] = {'I', 'o', 'o', 'I'};
@@ -853,10 +854,10 @@ int main()
     int ship5AmountPlayer = 1;
 
     // Anzahl der Schiffe für den Computer
-    int ship2AmountComputer = 0;
+    int ship2AmountComputer = 1;
     int ship3AmountComputer = 0;
     int ship4AmountComputer = 0;
-    int ship5AmountComputer = 1;
+    int ship5AmountComputer = 0;
 
     // Game Loop
     while (1)
