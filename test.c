@@ -10,14 +10,15 @@ int main()
     srand((unsigned)time(NULL));
 
     int size = 10;
-    int *lookup = (int *)malloc(size * sizeof(int));
+    int *lookup = (int *)malloc((unsigned long)size * sizeof(int));
 
-    for (int i = 1; i < size; i++)
+    for (int i = 0; i < size; i++)
     {
         lookup[i] = i;
     }
 
-    for (int i = 1; i < size; i++)
+
+    for (int i = 0; i < size; i++)
     {
         printf("%d\t", lookup[i]);
     }
@@ -26,7 +27,7 @@ int main()
     printf("\n");
 
 
-    int pos = lookup[rand() % (size + 1 - 0) + 0];
+    int pos = lookup[rand() % (size - 1 + 1) + 1];
 
     printf("%d\n", pos);
 
@@ -38,33 +39,49 @@ int main()
     }
     size--;
 
+    for (int j = 0; j < 9; j++)
 
-    for (int i = 1; i < size; i++)
     {
-        printf("%d\t", lookup[i]);
+        for (int i = 0; i < size; i++)
+        {
+            printf("%d\t", lookup[i]);
+        }
+
+        pos = lookup[rand() % (size - 1 + 1) + 1];
+
+        printf("\n");
+        printf("\n");
+
+        printf("%d\n", pos);
+
+        printf("\n");
+
+        if (lookup[pos] == pos)
+        {
+            for (int i = pos; i < size; i++)
+            {
+                lookup[i] = lookup[i + 1];
+            }
+            size--;
+        }
+        else if (lookup[pos] == pos - 1)
+        {
+            for (int i = pos - 1; i < size; i++)
+            {
+                lookup[i] = lookup[i + 1];
+            }
+            size--;
+        }
+        else
+        {
+            for (int i = pos - 1; i < size; i++)
+            {
+                lookup[i] = lookup[i + 1];
+            }
+            size--;
+        }
     }
 
-    pos = lookup[rand() % (size + 1 - 0) + 0];
-
-    printf("\n");
-    printf("\n");
-
-
-    printf("%d\n", pos);
-
-    printf("\n");
-
-    for (int i = pos - 1; i < size; i++)
-    {
-        lookup[i] = lookup[i + 1];
-    }
-    size--;
-
-
-    for (int i = 1; i < size; i++)
-    {
-        printf("%d\t", lookup[i]);
-    }
 
     return 0;
 }
